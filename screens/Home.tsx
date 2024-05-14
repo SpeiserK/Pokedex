@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {ScrollView, Text, View} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import PokeSpan from '../components/PokeSpan';
@@ -18,8 +18,9 @@ const Home = () => {
       }}>
       <Text>Pokedex</Text>
       <PokeSpan name={'/blaziken'}/>
-     
+      
     </View>
+    
    
   );
 };
