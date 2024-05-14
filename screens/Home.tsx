@@ -2,14 +2,14 @@ import React from 'react';
 import {Text, View} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import PokeSpan from './components/PokeSpan';
+import PokeSpan from '../components/PokeSpan';
 import { Provider } from 'react-redux';
-import { store } from './store';
+import { store } from '../store';
 
 
-const App = () => {
+const Home = () => {
   return (
-    <Provider store={store}>
+    
     <View
       style={{
         flex: 1,
@@ -18,11 +18,10 @@ const App = () => {
       }}>
       <Text>Pokedex</Text>
       <PokeSpan name={'/blaziken'}/>
-      
+     
     </View>
-    </Provider>
    
   );
 };
 
-export default App;
+export default Home;
