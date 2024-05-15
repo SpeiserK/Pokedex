@@ -1,13 +1,12 @@
 import React from 'react';
-import {ScrollView, Text, View} from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import PokeSpan from '../components/PokeSpan';
-import { Provider } from 'react-redux';
-import { store } from '../store';
-
+import {FlatList, Text, View} from 'react-native';
+import PokemonItem from '../components/PokemonItem';
+import { useGetPokemonByNameQuery } from '../services/pokemon';
 
 const Home = () => {
+
+    const {data , error , isLoading} = useGetPokemonByNameQuery('?limit=50&offset=0');
+
   return (
     
     <View
@@ -17,7 +16,20 @@ const Home = () => {
         alignItems: 'center',
       }}>
       <Text>Pokedex</Text>
-      <PokeSpan name={'/blaziken'}/>
+      {error ? (
+        <Text>Oh no, there was an error</Text>
+      ) : isLoading ? (
+        <Text>Loading...</Text>
+      ) : data ? (
+        <>
+          {/*<Text>{data}</Text>*/}
+          <FlatList
+          data={data.results}
+          renderItem={({item}) => <PokemonItem name={item.name}/>}
+          scrollEnabled={true}
+          />
+        </>
+      ) : null}
       
     </View>
     
