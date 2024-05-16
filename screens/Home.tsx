@@ -4,11 +4,16 @@ import PokemonItem from '../components/PokemonItem';
 import { useGetPokemonByNameQuery } from '../services/pokemon';
 
 const Home = () => {
+    let endReached = 1;
+    const {data , error , isLoading} = useGetPokemonByNameQuery('?limit=50&offset=10');
 
-    const {data , error , isLoading} = useGetPokemonByNameQuery('?limit=50&offset=0');
+    function handleEndReached(){
+        endReached++;
+    }
+    
 
   return (
-    
+
     <View
       style={{
         flex: 1,
@@ -22,11 +27,12 @@ const Home = () => {
         <Text>Loading...</Text>
       ) : data ? (
         <>
-          
           <FlatList
           data={data.results}
           renderItem={({item}) => <PokemonItem name={item.name}/>}
           scrollEnabled={true}
+          onEndReachedThreshold={2}
+          onEndReached={handleEndReached}
           /> 
         </>
       ) : null}

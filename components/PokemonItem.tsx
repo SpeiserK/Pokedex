@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, Image} from 'react-native';
+import {Text, View, Image, TouchableOpacity} from 'react-native';
 import { useGetPokemonByNameQuery } from '../services/pokemon';
 
 type PokeProps = {
@@ -10,6 +10,9 @@ let prefix = '/';
 
 const PokemonItem = (props: PokeProps) => {
   const {data , error , isLoading} = useGetPokemonByNameQuery(prefix.concat(props.name));
+  function handlePressIn(name: string){
+    console.log('You have pressed '+name);
+  }
   return (
     <View
       style={{
@@ -22,7 +25,18 @@ const PokemonItem = (props: PokeProps) => {
       ) : isLoading ? (
         <Text>Loading...</Text>
       ) : data ? (
-        <>
+        <TouchableOpacity
+        onPress={() =>{
+          handlePressIn(props.name);
+        }}
+        >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
           <Image
           source={{
             uri: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+data.id+'.png',
@@ -31,7 +45,8 @@ const PokemonItem = (props: PokeProps) => {
         />
           <Text>{props.name} {data.id}</Text>
           
-        </>
+        </View>
+        </TouchableOpacity>
       ) : null}
     </View>
   );
