@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, Text, View} from 'react-native';
+import {FlatList, ScrollView, Text, View} from 'react-native';
 import PokemonItem from '../components/PokemonItem';
 import { useGetPokemonByNameQuery } from '../services/pokemon';
 
@@ -13,7 +13,7 @@ const Home = () => {
       style={{
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center'
       }}>
       <Text>Pokedex</Text>
       {error ? (
@@ -22,17 +22,17 @@ const Home = () => {
         <Text>Loading...</Text>
       ) : data ? (
         <>
-          {/*<Text>{data}</Text>*/}
+          
           <FlatList
           data={data.results}
           renderItem={({item}) => <PokemonItem name={item.name}/>}
           scrollEnabled={true}
-          />
+          /> 
         </>
       ) : null}
       
     </View>
-    
+
    
   );
 };

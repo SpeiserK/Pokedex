@@ -7,7 +7,6 @@ type PokeProps = {
 };
 
 let prefix = '/';
-//style={{width: 200, height: 200}}
 
 const PokemonItem = (props: PokeProps) => {
   const {data , error , isLoading} = useGetPokemonByNameQuery(prefix.concat(props.name));
@@ -18,14 +17,22 @@ const PokemonItem = (props: PokeProps) => {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-        <Image
+        {error ? (
+        <Text>Oh no, there was an error</Text>
+      ) : isLoading ? (
+        <Text>Loading...</Text>
+      ) : data ? (
+        <>
+          <Image
           source={{
             uri: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+data.id+'.png',
           }}
           style={{width: 40, height: 40}}
         />
-        <Text>{props.name} {data.id}</Text>
-      
+          <Text>{props.name} {data.id}</Text>
+          
+        </>
+      ) : null}
     </View>
   );
 };
