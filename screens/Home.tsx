@@ -1,7 +1,8 @@
 import React from 'react';
-import {FlatList, ScrollView, Text, View} from 'react-native';
+import {FlatList, Text, View, TouchableOpacity} from 'react-native';
 import PokemonItem from '../components/PokemonItem';
 import { useGetPokemonByNameQuery } from '../services/pokemon';
+import { useNavigation } from '@react-navigation/native';
 
 const Home = () => {
     let endReached = 1;
@@ -10,7 +11,9 @@ const Home = () => {
     function handleEndReached(){
         endReached++;
     }
-    
+
+    const navigation = useNavigation();
+
 
   return (
 
@@ -27,6 +30,7 @@ const Home = () => {
         <Text>Loading...</Text>
       ) : data ? (
         <>
+        
           <FlatList
           data={data.results}
           renderItem={({item}) => <PokemonItem name={item.name}/>}
@@ -34,6 +38,7 @@ const Home = () => {
           onEndReachedThreshold={2}
           onEndReached={handleEndReached}
           /> 
+        
         </>
       ) : null}
       

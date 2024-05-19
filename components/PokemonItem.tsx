@@ -1,18 +1,25 @@
 import React from 'react';
 import {Text, View, Image, TouchableOpacity} from 'react-native';
 import { useGetPokemonByNameQuery } from '../services/pokemon';
+import { NavigationAction, useNavigation } from '@react-navigation/native';
 
 type PokeProps = {
     name: string;
+    
 };
 
 let prefix = '/';
 
-const PokemonItem = (props: PokeProps) => {
+
+function PokemonItem (props: PokeProps) {
+  const navigation = useNavigation(); 
   const {data , error , isLoading} = useGetPokemonByNameQuery(prefix.concat(props.name));
   function handlePressIn(name: string){
+    
     console.log('You have pressed '+name);
+    navigation.navigate('PokeDetails' as never, {pokeId: props.name} as never);
   }
+
   return (
     <View
       style={{
@@ -41,7 +48,7 @@ const PokemonItem = (props: PokeProps) => {
           source={{
             uri: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+data.id+'.png',
           }}
-          style={{width: 40, height: 40}}
+          style={{width: 96, height: 96}}
         />
           <Text>{props.name} {data.id}</Text>
           
