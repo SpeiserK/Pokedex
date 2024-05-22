@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const Home = () => {
     let endReached = 1;
-    const {data , error , isLoading} = useGetPokemonByNameQuery('?limit=50&offset=10');
+    const {data , error , isLoading} = useGetPokemonByNameQuery('?limit=50&offset=0');
 
     function handleEndReached(){
         endReached++;
@@ -21,9 +21,20 @@ const Home = () => {
       style={{
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        
+        
       }}>
-      <Text>Pokedex</Text>
+      <Text style={{
+        fontSize: 30,
+        fontWeight: 'bold',
+        alignSelf: 'flex-start',
+        paddingLeft: 20,
+        paddingBottom: 10,
+        paddingTop: 5,
+        fontStyle: 'italic',
+        color: 'royalblue'
+      }}>Pokédex</Text>
       {error ? (
         <Text>Oh no, there was an error</Text>
       ) : isLoading ? (
@@ -33,10 +44,11 @@ const Home = () => {
         
           <FlatList
           data={data.results}
-          renderItem={({item}) => <PokemonItem name={item.name}/>}
+          renderItem={({item}) => <PokemonItem name={item.name} />}
           scrollEnabled={true}
           onEndReachedThreshold={2}
           onEndReached={handleEndReached}
+          style={{width: '95%'}}
           /> 
         
         </>
