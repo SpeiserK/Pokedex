@@ -6,7 +6,7 @@ import TypeWidget from '../components/TypeWidget';
 
 let prefix = '/';
 
-function PokeDetails ({route}){
+function PokeDetails ({route}: any){
     
     const {data , error , isLoading} = useGetPokemonByNameQuery(prefix.concat(route.params.pokeId));
     let pokeMoves = '';
@@ -30,23 +30,25 @@ function PokeDetails ({route}){
        return splitMove[0] +' '+ capFirstLetter(splitMove[1]);
     }
     
-    for(let i = 0; i <data.moves.length;i++){
-        var newMove = capFirstLetter(data.moves[i].move.name);
-        if(newMove.includes('-')){
-            newMove = capMove(newMove);
-        }
-        if(i < 3){
-            initPokeMoves += newMove;
-            if(i < 2){
-                initPokeMoves += ', ';
+    if(data.moves !== undefined){
+        for(let i = 0; i <data.moves.length;i++){
+            var newMove = capFirstLetter(data.moves[i].move.name);
+            if(newMove.includes('-')){
+                newMove = capMove(newMove);
             }
-        }
-        pokeMoves += newMove;
-        if(i < (data.moves.length-1)){
-            pokeMoves += ', ';
-        }
-        if((i+1) % 3 == 0){
-            pokeMoves += '\n';
+            if(i < 3){
+                initPokeMoves += newMove;
+                if(i < 2){
+                    initPokeMoves += ', ';
+                }
+            }
+            pokeMoves += newMove;
+            if(i < (data.moves.length-1)){
+                pokeMoves += ', ';
+            }
+            if((i+1) % 3 == 0){
+                pokeMoves += '\n';
+            }
         }
     }
 

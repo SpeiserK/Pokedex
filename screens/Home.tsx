@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {FlatList, Text, View, TouchableOpacity} from 'react-native';
 import PokemonItem from '../components/PokemonItem';
-import { useGetPokemonByNameQuery } from '../services/pokemon';
-import { useNavigation } from '@react-navigation/native';
+import { useGetPokemonByNameQuery } from '../services/pokemonList';
 
-const Home = () => {
-    let endReached = 1;
-    const {data , error , isLoading} = useGetPokemonByNameQuery('?limit=50&offset=0');
+function Home () {
+    let initQuery = '?limit=50&offset=0';
+    const [query, setQuery] = useState(initQuery);
+    const [endCount,setEndCount] = useState(1);
+    var {data , error , isLoading} = useGetPokemonByNameQuery(query);
 
     function handleEndReached(){
-        endReached++;
+        setEndCount(endCount+1);
+        console.log('end reached, reloading');
+        setQuery('?limit=50&offset='+(endCount*50));
     }
-
-    const navigation = useNavigation();
 
 
   return (
@@ -44,10 +45,16 @@ const Home = () => {
         
           <FlatList
           data={data.results}
-          renderItem={({item}) => <PokemonItem name={item.name} />}
+          renderItem={({item}) => <PokemonItem name={item.name}/>}
           scrollEnabled={true}
-          onEndReachedThreshold={2}
-          onEndReached={handleEndReached}
+          onEndReachedThreshold={1}
+          onEndReached={({distanceFromEnd}) => {
+            if(distanceFromEnd < 0){
+                console.log(distanceFromEnd);
+                return;
+            }
+            handleEndReached()
+        }}
           style={{width: '95%'}}
           /> 
         

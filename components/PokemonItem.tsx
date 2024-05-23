@@ -5,29 +5,31 @@ import { NavigationAction, useNavigation } from '@react-navigation/native';
 
 type PokeProps = {
     name: string;
-    
 };
 
 let prefix = '/';
 
 function capFirstLetter(str: string){
-  return str.charAt(0).toUpperCase()+str.slice(1);
+   let capFirst = str.charAt(0).toUpperCase()+str.slice(1);
+   if(capFirst.includes('-')){
+      let splitName = capFirst.split('-');
+      return splitName[0] +' '+ splitName[1].charAt(0).toUpperCase()+splitName[1].slice(1);
+   }
+  return capFirst;
 }
 
 
 function PokemonItem (props: PokeProps) {
   const navigation = useNavigation(); 
   const {data , error , isLoading} = useGetPokemonByNameQuery(prefix.concat(props.name));
-  function handlePressIn(name: string){
-    
-    console.log('You have pressed '+name);
+  function handlePressIn(){
     navigation.navigate('PokeDetails' as never, {pokeId: props.name} as never);
   }
 
   return (
     <TouchableOpacity
         onPress={() =>{
-          handlePressIn(props.name);
+          handlePressIn();
         }}
         >
     <View style={styles.container1}>
