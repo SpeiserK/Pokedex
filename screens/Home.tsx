@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import {FlatList, Text, View, TouchableOpacity} from 'react-native';
 import PokemonItem from '../components/PokemonItem';
-import { useGetPokemonByNameQuery } from '../services/pokemonList';
+import { useGetPokemonByNameListQuery } from '../services/pokemon';
+
 
 function Home () {
     let initQuery = '?limit=50&offset=0';
     const [query, setQuery] = useState(initQuery);
     const [endCount,setEndCount] = useState(1);
-    var {data , error , isLoading} = useGetPokemonByNameQuery(query);
+    var {data , error , isLoading } = useGetPokemonByNameListQuery(query);
 
     function handleEndReached(){
-        setEndCount(endCount+1);
         console.log('end reached, reloading');
-        setQuery('?limit=50&offset='+(endCount*50));
+        setEndCount(endCount+1);
+        setQuery('?limit=50&offset='+(endCount*50)); 
+        
     }
 
 
@@ -41,11 +43,12 @@ function Home () {
       ) : isLoading ? (
         <Text>Loading...</Text>
       ) : data ? (
-        <>
         
+        <>
+          
           <FlatList
           data={data.results}
-          renderItem={({item}) => <PokemonItem name={item.name}/>}
+          renderItem={({item}) => <PokemonItem name= {item.name}/>}
           scrollEnabled={true}
           onEndReachedThreshold={1}
           onEndReached={({distanceFromEnd}) => {
