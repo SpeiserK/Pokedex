@@ -7,8 +7,10 @@ type PokeProps = {
     name: string;
 };
 
+//Prefix for query by name
 let prefix = '/';
 
+//Capitalize first letter of Name
 function capFirstLetter(str: string){
    let capFirst = str.charAt(0).toUpperCase()+str.slice(1);
    if(capFirst.includes('-')){
@@ -22,6 +24,7 @@ function capFirstLetter(str: string){
 function PokemonItem (props: PokeProps) {
   const navigation = useNavigation(); 
   const {data , error , isLoading} = useGetPokemonByNameQuery(prefix.concat(props.name));
+  //On press navigate to PokeDetails.tsx
   function handlePressIn(){
     navigation.navigate('PokeDetails' as never, {pokeId: props.name} as never);
   }
@@ -38,7 +41,6 @@ function PokemonItem (props: PokeProps) {
       ) : isLoading ? (
         <Text>Loading...</Text>
       ) : data ? (
-        
         <View style={styles.container2}>
           <View>
             <Image
@@ -78,15 +80,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 8
-    
-    
   },
   container2: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-   
   },
   textBox: {
     flex: 3,
@@ -94,7 +93,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'space-between',
     paddingLeft: 5
-    
   },
   nameStyle: {
     fontSize: 23,
@@ -112,8 +110,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'flex-end',
     paddingRight: 15
-    
-    
   }
 });
 

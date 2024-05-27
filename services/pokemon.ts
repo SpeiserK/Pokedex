@@ -9,21 +9,25 @@ export const pokemonApi = createApi({
       query: (name) => `pokemon${name}`, 
     }),
     getPokemonByNameList: builder.query({
-      query: (name) => `pokemon${name}`,
+      query: ({offset}:{offset: number}) => (`pokemon?limit=50&offset=${offset}`),
       // Only have one cache entry because the arg always maps to one string
-      serializeQueryArgs: ({ endpointName }) => {
-        return endpointName
+      serializeQueryArgs: ({ endpointName }) => {  
+        return `${endpointName}`
       },
       // Always merge incoming data to the cache entry
       merge: (currentCache, newItems) => {
+       // Add new results to old results
         var obj = {results: []}
         currentCache = currentCache.results.concat(newItems.results)
         obj.results = currentCache;
         currentCache = obj;
+        return {
+          results: currentCache.results
+        };
       },
       // Refetch when the page arg changes
       forceRefetch({ currentArg, previousArg }) {
-        return currentArg !== previousArg
+        return currentArg?.offset !== previousArg?.offset
       },
     }),
   }),

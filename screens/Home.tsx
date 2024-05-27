@@ -5,28 +5,22 @@ import { useGetPokemonByNameListQuery } from '../services/pokemon';
 
 
 function Home () {
-    let initQuery = '?limit=50&offset=0';
-    const [query, setQuery] = useState(initQuery);
-    const [endCount,setEndCount] = useState(1);
-    var {data , error , isLoading } = useGetPokemonByNameListQuery(query);
-
+    //Offset state variable
+    const [offset, setOffset] = useState(0)
+    //Query call
+    var {data , error , isLoading} = useGetPokemonByNameListQuery({offset});
+    
+    //Update offset when end of list reached
     function handleEndReached(){
-        console.log('end reached, reloading');
-        setEndCount(endCount+1);
-        setQuery('?limit=50&offset='+(endCount*50)); 
-        
+        setOffset(offset + 50);
     }
 
-
   return (
-
     <View
       style={{
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        
-        
       }}>
       <Text style={{
         fontSize: 30,
@@ -43,30 +37,23 @@ function Home () {
       ) : isLoading ? (
         <Text>Loading...</Text>
       ) : data ? (
-        
         <>
-          
           <FlatList
           data={data.results}
           renderItem={({item}) => <PokemonItem name= {item.name}/>}
           scrollEnabled={true}
-          onEndReachedThreshold={1}
+          onEndReachedThreshold={0.1}
           onEndReached={({distanceFromEnd}) => {
             if(distanceFromEnd < 0){
-                console.log(distanceFromEnd);
                 return;
             }
             handleEndReached()
         }}
           style={{width: '95%'}}
           /> 
-        
         </>
-      ) : null}
-      
+      ) : null} 
     </View>
-
-   
   );
 };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, Text} from 'react-native';
 
 
 type TypeProps = {
@@ -10,7 +10,7 @@ type TypeProps = {
 var typeColor;
 
 function TypeWidget (props: TypeProps) {
-    
+    //Determine widget color from Type
     switch (props.type){
         case 'Normal':
             typeColor = 'tan';
@@ -72,7 +72,6 @@ function TypeWidget (props: TypeProps) {
     }
  
   return (
-    
     <View style={{
         backgroundColor: typeColor,
         borderRadius: 30,
@@ -82,7 +81,6 @@ function TypeWidget (props: TypeProps) {
         paddingRight: 35,
         paddingTop: 4,
         paddingBottom: 4,
-        
         }}>
         <Text style={{color: 'white',fontSize:20}}>{props.type}</Text>
     </View>
