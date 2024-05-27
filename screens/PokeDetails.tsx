@@ -4,6 +4,7 @@ import { useGetPokemonByNameQuery } from '../services/pokemon';
 import { Route } from '@react-navigation/native';
 import TypeWidget from '../components/TypeWidget';
 
+//Prefix for name query
 let prefix = '/';
 
 function PokeDetails ({route}: any){
@@ -16,20 +17,23 @@ function PokeDetails ({route}: any){
     let afterBttn = 'Show Less Moves';
 
     
-
+    //Capitalize first letter of Name/Move
     function capFirstLetter(str: string){
         return str.charAt(0).toUpperCase()+str.slice(1);
     }
 
+    //Fixes Height/Weight values
     function fixHeight(str: number){
         return (str*0.1).toFixed(1);
     }
 
+    //Capitalizes second name of Move
     function capMove(str: string){
        var splitMove = str.split('-');
        return splitMove[0] +' '+ capFirstLetter(splitMove[1]);
     }
     
+    //Create short list and longer list of all moves
     if(data.moves !== undefined){
         for(let i = 0; i <data.moves.length;i++){
             var newMove = capFirstLetter(data.moves[i].move.name);
@@ -52,10 +56,12 @@ function PokeDetails ({route}: any){
         }
     }
 
+    //Check for multiple types on Pokemon
     if(data.types.length>1){
         typeCount = true;
     }
 
+    //State that shows short move list or longer list, button to switch between
     const [showMoves, setShowMoves] = useState(initPokeMoves);
     const [buttonTitle, setButtonTitle] = useState(initBttn);
 
@@ -118,13 +124,9 @@ function PokeDetails ({route}: any){
                         />
                     </View>
                 </View>
-            
-        
-        
             </ScrollView>
         </View>
-      ) : null}
-      
+      ) : null}   
     </View>
   );
 };
@@ -150,23 +152,16 @@ const styles = StyleSheet.create({
     topBox: {
         flex: 2,
         flexDirection: 'column',
-        justifyContent: 'center',
-        //alignItems: 'flex-start'
-        
-        
+        justifyContent: 'center', 
     },
     imageBox: {
         flex: 2,
         backgroundColor: 'linen',
-        borderRadius: 10,
-        
-        
+        borderRadius: 10, 
     },
     textBox: {
         flex: 0,
         alignItems: 'center',
-        
-
     },
     nameStyle: {
         fontSize: 30,
@@ -181,13 +176,9 @@ const styles = StyleSheet.create({
         alignItems:'center',
         marginBottom: 20,
         marginTop: 5
-        
-        
-
     },
     moveBox: {
         flex: 1,
-        //alignItems: 'flex-start',
         justifyContent:'center',
         backgroundColor: 'aliceblue',
         borderRadius: 10,
