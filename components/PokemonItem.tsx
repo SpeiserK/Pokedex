@@ -5,6 +5,7 @@ import { NavigationAction, useNavigation } from '@react-navigation/native';
 
 type PokeProps = {
     name: string;
+    url: string;
 };
 
 //Prefix for query by name
@@ -20,10 +21,18 @@ function capFirstLetter(str: string){
   return capFirst;
 }
 
+//Get Pokemon Id from URL
+function getID(str: string){
+  var strArr = str.split('/');
+  return strArr[6];
+}
+
+
+//<Text style={styles.idStyle}>{data.id}</Text>
 
 function PokemonItem (props: PokeProps) {
   const navigation = useNavigation(); 
-  const {data , error , isLoading} = useGetPokemonByNameQuery(prefix.concat(props.name));
+  //const {data , error , isLoading} = useGetPokemonByNameQuery(prefix.concat(props.name));
   //On press navigate to PokeDetails.tsx
   function handlePressIn(){
     navigation.navigate('PokeDetails' as never, {pokeId: props.name} as never);
@@ -36,6 +45,7 @@ function PokemonItem (props: PokeProps) {
         }}
         >
     <View style={styles.container1}>
+      {/* 
         {error ? (
         <Text>Oh no, there was an error</Text>
       ) : isLoading ? (
@@ -44,21 +54,39 @@ function PokemonItem (props: PokeProps) {
         <View style={styles.container2}>
           <View>
             <Image
-            source={{
-              uri: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+data.id+'.png',
-            }}
-            style={{width: 96, height: 96}}
-            />
-          </View>
+              source={{
+                uri: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+data.id+'.png',
+              }}
+              style={{width: 96, height: 96}}
+              />
+            </View>
           <View style={styles.textBox}>
             <Text style={styles.nameStyle}>{capFirstLetter(props.name)}</Text>
-            <Text style={styles.idStyle}>{data.id}</Text>
+            
           </View>
           <View style={styles.arrowBox}>
             <Text style={styles.arrowStyle}> {'➤'} </Text>
           </View> 
         </View>
       ) : null}
+      */}
+      <View style={styles.container2}>
+          <View>
+            <Image
+              source={{
+                uri: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+getID(props.url)+'.png',
+              }}
+              style={{width: 96, height: 96}}
+              />
+            </View>
+          <View style={styles.textBox}>
+            <Text style={styles.nameStyle}>{capFirstLetter(props.name)}</Text>
+            <Text style={styles.idStyle}>{getID(props.url)}</Text>
+          </View>
+          <View style={styles.arrowBox}>
+            <Text style={styles.arrowStyle}> {'➤'} </Text>
+          </View> 
+        </View>
     </View>
     </TouchableOpacity>
   );

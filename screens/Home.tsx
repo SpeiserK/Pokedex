@@ -9,10 +9,14 @@ function Home () {
     const [offset, setOffset] = useState(0)
     //Query call
     var {data , error , isLoading} = useGetPokemonByNameListQuery({offset});
+    //Variable to prevent multiple reloads
+    const [reload, setReload] = useState(false);
     
     //Update offset when end of list reached
     function handleEndReached(){
         setOffset(offset + 50);
+        setReload(false);
+        console.log('offset +50')
     }
 
   return (
@@ -40,13 +44,14 @@ function Home () {
         <>
           <FlatList
           data={data.results}
-          renderItem={({item}) => <PokemonItem name= {item.name}/>}
+          renderItem={({item}) => <PokemonItem name= {item.name} url ={item.url}/>}
           scrollEnabled={true}
-          onEndReachedThreshold={0.1}
+          onEndReachedThreshold={1}
           onEndReached={({distanceFromEnd}) => {
-            if(distanceFromEnd < 0){
+            if(distanceFromEnd < 0 || reload == true){
                 return;
             }
+            setReload(true);
             handleEndReached()
         }}
           style={{width: '95%'}}

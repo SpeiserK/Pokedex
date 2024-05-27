@@ -4,10 +4,12 @@ import { useGetPokemonByNameQuery } from '../services/pokemon';
 import { Route } from '@react-navigation/native';
 import TypeWidget from '../components/TypeWidget';
 
-//Prefix for name query
-let prefix = '/';
+
 
 function PokeDetails ({route}: any){
+
+    //Prefix for name query
+    let prefix = '/';
     
     const {data , error , isLoading} = useGetPokemonByNameQuery(prefix.concat(route.params.pokeId));
     let pokeMoves = '';
