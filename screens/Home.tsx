@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {FlatList, Text, View, TouchableOpacity} from 'react-native';
+import {FlatList, Text, View} from 'react-native';
 import PokemonItem from '../components/PokemonItem';
 import { useGetPokemonByNameListQuery } from '../services/pokemon';
 
@@ -9,11 +9,6 @@ function Home () {
     const [offset, setOffset] = useState(0)
     //Query call
     var {data , error , isLoading} = useGetPokemonByNameListQuery({offset});
-    
-    //Update offset when end of list reached
-    function handleEndReached(){
-        setOffset(offset + 50);
-    }
 
   return (
     <View
@@ -40,14 +35,15 @@ function Home () {
         <>
           <FlatList
           data={data.results}
-          renderItem={({item}) => <PokemonItem name= {item.name}/>}
+          renderItem={({item}) => <PokemonItem name= {item.name} url ={item.url}/>}
           scrollEnabled={true}
-          onEndReachedThreshold={0.1}
+          onEndReachedThreshold={2}
           onEndReached={({distanceFromEnd}) => {
             if(distanceFromEnd < 0){
                 return;
             }
-            handleEndReached()
+            //Update offset on end reached
+            setOffset(offset + 50);
         }}
           style={{width: '95%'}}
           /> 

@@ -1,14 +1,11 @@
 import React from 'react';
 import {Text, View, Image, TouchableOpacity, StyleSheet} from 'react-native';
-import { useGetPokemonByNameQuery } from '../services/pokemon';
-import { NavigationAction, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 type PokeProps = {
     name: string;
+    url: string;
 };
-
-//Prefix for query by name
-let prefix = '/';
 
 //Capitalize first letter of Name
 function capFirstLetter(str: string){
@@ -20,13 +17,19 @@ function capFirstLetter(str: string){
   return capFirst;
 }
 
+//Get Pokemon Id from URL
+function getID(str: string){
+  var strArr = str.split('/');
+  return strArr[6];
+}
 
 function PokemonItem (props: PokeProps) {
   const navigation = useNavigation(); 
-  const {data , error , isLoading} = useGetPokemonByNameQuery(prefix.concat(props.name));
-  //On press navigate to PokeDetails.tsx
+  //On press navigate to PokeDetails.tsx, pass Pokemon name for query
   function handlePressIn(){
-    navigation.navigate('PokeDetails' as never, {pokeId: props.name} as never);
+    //navigation.navigate('PokeDetails' as never, {pokeId: props.name} as never);
+    navigation.navigate('PokeDetails', {pokeId: props.name});
+    
   }
 
   return (
@@ -36,6 +39,7 @@ function PokemonItem (props: PokeProps) {
         }}
         >
     <View style={styles.container1}>
+      {/* 
         {error ? (
         <Text>Oh no, there was an error</Text>
       ) : isLoading ? (
@@ -44,21 +48,39 @@ function PokemonItem (props: PokeProps) {
         <View style={styles.container2}>
           <View>
             <Image
-            source={{
-              uri: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+data.id+'.png',
-            }}
-            style={{width: 96, height: 96}}
-            />
-          </View>
+              source={{
+                uri: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+data.id+'.png',
+              }}
+              style={{width: 96, height: 96}}
+              />
+            </View>
           <View style={styles.textBox}>
             <Text style={styles.nameStyle}>{capFirstLetter(props.name)}</Text>
-            <Text style={styles.idStyle}>{data.id}</Text>
+            
           </View>
           <View style={styles.arrowBox}>
             <Text style={styles.arrowStyle}> {'➤'} </Text>
           </View> 
         </View>
       ) : null}
+      */}
+      <View style={styles.container2}>
+          <View>
+            <Image
+              source={{
+                uri: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+getID(props.url)+'.png',
+              }}
+              style={{width: 96, height: 96}}
+              />
+            </View>
+          <View style={styles.textBox}>
+            <Text style={styles.nameStyle}>{capFirstLetter(props.name)}</Text>
+            <Text style={styles.idStyle}>{getID(props.url)}</Text>
+          </View>
+          <View style={styles.arrowBox}>
+            <Text style={styles.arrowStyle}> {'➤'} </Text>
+          </View> 
+        </View>
     </View>
     </TouchableOpacity>
   );
