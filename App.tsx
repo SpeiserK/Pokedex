@@ -13,7 +13,7 @@ export type RootStackParamList = {
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
-type Props = NativeStackScreenProps<RootStackParamList, 'PokeDetails'>;
+//type Props = NativeStackScreenProps<RootStackParamList, 'PokeDetails'>;
 
 
 const App = () => {

@@ -27,15 +27,13 @@ function getID(str: string){
   return strArr[6];
 }
 
-
-//<Text style={styles.idStyle}>{data.id}</Text>
-
 function PokemonItem (props: PokeProps) {
   const navigation = useNavigation(); 
-  //const {data , error , isLoading} = useGetPokemonByNameQuery(prefix.concat(props.name));
   //On press navigate to PokeDetails.tsx
   function handlePressIn(){
-    navigation.navigate('PokeDetails' as never, {pokeId: props.name} as never);
+    //navigation.navigate('PokeDetails' as never, {pokeId: props.name} as never);
+    navigation.navigate('PokeDetails', {pokeId: props.name});
+    
   }
 
   return (

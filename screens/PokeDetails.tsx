@@ -9,9 +9,10 @@ import TypeWidget from '../components/TypeWidget';
 function PokeDetails ({route}: any){
 
     //Prefix for name query
-    let prefix = '/';
+    console.log(route.params.pokeId)
+    var name = route.params.pokeId;
     
-    const {data , error , isLoading} = useGetPokemonByNameQuery(prefix.concat(route.params.pokeId));
+    const {data , error , isLoading} = useGetPokemonByNameQuery({name});
     let pokeMoves = '';
     let initPokeMoves = '';
     var typeCount = false;
@@ -34,9 +35,11 @@ function PokeDetails ({route}: any){
        var splitMove = str.split('-');
        return splitMove[0] +' '+ capFirstLetter(splitMove[1]);
     }
+
+    
     
     //Create short list and longer list of all moves
-    if(data.moves !== undefined){
+    if(data){
         for(let i = 0; i <data.moves.length;i++){
             var newMove = capFirstLetter(data.moves[i].move.name);
             if(newMove.includes('-')){
@@ -56,18 +59,21 @@ function PokeDetails ({route}: any){
                 pokeMoves += '\n';
             }
         }
-    }
+         //Check for multiple types on Pokemon
+        if(data.types.length>1){
+            typeCount = true;
+        }
 
-    //Check for multiple types on Pokemon
-    if(data.types.length>1){
-        typeCount = true;
+        //setShowMoves(initPokeMoves);
     }
-
+    
     //State that shows short move list or longer list, button to switch between
     const [showMoves, setShowMoves] = useState(initPokeMoves);
     const [buttonTitle, setButtonTitle] = useState(initBttn);
 
+
     function buttonClick (){
+        
         if(buttonTitle == initBttn){
             setShowMoves(pokeMoves);
             setButtonTitle(afterBttn);
@@ -75,6 +81,7 @@ function PokeDetails ({route}: any){
             setShowMoves(initPokeMoves);
             setButtonTitle(initBttn);
         }
+        
     }
 
   return (
