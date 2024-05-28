@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {FlatList, Text, View, TouchableOpacity} from 'react-native';
+import {FlatList, Text, View} from 'react-native';
 import PokemonItem from '../components/PokemonItem';
 import { useGetPokemonByNameListQuery } from '../services/pokemon';
 
