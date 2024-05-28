@@ -7,8 +7,7 @@ export const pokemonApi = createApi({
   endpoints: (builder) => ({
     getPokemonByName: builder.query({
       //query: (name) => `pokemon${name}`, 
-      query: ({name}:{name: string}) => (`pokemon/${name}`)
-
+      query: ({name}:{name: string}) => (`pokemon/${name}`),
     }),
     getPokemonByNameList: builder.query({
       query: ({offset}:{offset: number}) => (`pokemon?limit=50&offset=${offset}`),
@@ -23,6 +22,7 @@ export const pokemonApi = createApi({
         currentCache = currentCache.results.concat(newItems.results)
         obj.results = currentCache;
         currentCache = obj;
+        console.log(currentCache)
         return {
           results: currentCache.results
         };

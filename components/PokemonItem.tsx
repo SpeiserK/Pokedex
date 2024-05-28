@@ -1,15 +1,11 @@
 import React from 'react';
 import {Text, View, Image, TouchableOpacity, StyleSheet} from 'react-native';
-import { useGetPokemonByNameQuery } from '../services/pokemon';
-import { NavigationAction, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 type PokeProps = {
     name: string;
     url: string;
 };
-
-//Prefix for query by name
-let prefix = '/';
 
 //Capitalize first letter of Name
 function capFirstLetter(str: string){
@@ -29,7 +25,7 @@ function getID(str: string){
 
 function PokemonItem (props: PokeProps) {
   const navigation = useNavigation(); 
-  //On press navigate to PokeDetails.tsx
+  //On press navigate to PokeDetails.tsx, pass Pokemon name for query
   function handlePressIn(){
     //navigation.navigate('PokeDetails' as never, {pokeId: props.name} as never);
     navigation.navigate('PokeDetails', {pokeId: props.name});

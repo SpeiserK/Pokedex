@@ -8,18 +8,15 @@ import TypeWidget from '../components/TypeWidget';
 
 function PokeDetails ({route}: any){
 
-    //Prefix for name query
-    console.log(route.params.pokeId)
     var name = route.params.pokeId;
-    
     const {data , error , isLoading} = useGetPokemonByNameQuery({name});
+    
     let pokeMoves = '';
     let initPokeMoves = '';
     var typeCount = false;
     let initBttn = 'Show All Moves';
     let afterBttn = 'Show Less Moves';
-
-    
+ 
     //Capitalize first letter of Name/Move
     function capFirstLetter(str: string){
         return str.charAt(0).toUpperCase()+str.slice(1);
@@ -35,11 +32,8 @@ function PokeDetails ({route}: any){
        var splitMove = str.split('-');
        return splitMove[0] +' '+ capFirstLetter(splitMove[1]);
     }
-
     
-    
-    //Create short list and longer list of all moves
-    if(data){
+    function movesList(){
         for(let i = 0; i <data.moves.length;i++){
             var newMove = capFirstLetter(data.moves[i].move.name);
             if(newMove.includes('-')){
@@ -59,29 +53,53 @@ function PokeDetails ({route}: any){
                 pokeMoves += '\n';
             }
         }
+
+        return initPokeMoves
+    }
+    //Create short list and longer list of all moves
+    if(data){
+        /*
+        for(let i = 0; i <data.moves.length;i++){
+            var newMove = capFirstLetter(data.moves[i].move.name);
+            if(newMove.includes('-')){
+                newMove = capMove(newMove);
+            }
+            if(i < 3){
+                initPokeMoves += newMove;
+                if(i < 2){
+                    initPokeMoves += ', ';
+                }
+            }
+            pokeMoves += newMove;
+            if(i < (data.moves.length-1)){
+                pokeMoves += ', ';
+            }
+            if((i+1) % 3 == 0){
+                pokeMoves += '\n';
+            }
+        }
+        */
          //Check for multiple types on Pokemon
         if(data.types.length>1){
             typeCount = true;
         }
-
-        //setShowMoves(initPokeMoves);
     }
-    
-    //State that shows short move list or longer list, button to switch between
-    const [showMoves, setShowMoves] = useState(initPokeMoves);
-    const [buttonTitle, setButtonTitle] = useState(initBttn);
 
+     //State that shows short move list or longer list, button to switch between
+     const [showMoves, setShowMoves] = useState(initPokeMoves);
+     const [buttonTitle, setButtonTitle] = useState(initBttn);
+     const [moves, setMoves] = useState(false);
 
     function buttonClick (){
-        
         if(buttonTitle == initBttn){
+            setMoves(true);
             setShowMoves(pokeMoves);
             setButtonTitle(afterBttn);
         }else{
+            setMoves(false);
             setShowMoves(initPokeMoves);
             setButtonTitle(initBttn);
         }
-        
     }
 
   return (
@@ -91,7 +109,7 @@ function PokeDetails ({route}: any){
         justifyContent: 'center',
         alignItems: 'center'
       }}>
-      {error ? (
+        {error ? (
         <Text>Oh no, there was an error</Text>
       ) : isLoading ? (
         <Text>Loading...</Text>
@@ -124,7 +142,12 @@ function PokeDetails ({route}: any){
                         <Text style={styles.moveTitle}>Moveset</Text>
                     </View>
                     <View style={styles.moveList}>
-                        <Text style={{fontSize: 15}}>{showMoves}</Text>
+                        {!moves ?(
+                        <Text style={{fontSize: 15}}>{movesList()}</Text>
+                        ): moves ? (
+                            <Text>{showMoves}</Text>
+                        ): null}
+                        
                     </View>
                     <View style={styles.buttonBox}>
                         <Button
