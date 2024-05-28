@@ -29,7 +29,7 @@ export const pokemonApi = createApi({
       },
       // Refetch when the page arg changes
       forceRefetch({ currentArg, previousArg }) {
-        return currentArg?.offset !== previousArg?.offset
+        return currentArg!== previousArg
       },
     }),
   }),

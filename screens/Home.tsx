@@ -37,13 +37,14 @@ function Home () {
           data={data.results}
           renderItem={({item}) => <PokemonItem name= {item.name} url ={item.url}/>}
           scrollEnabled={true}
-          onEndReachedThreshold={2}
+          initialNumToRender={50}
+          onEndReachedThreshold={0.5}
           onEndReached={({distanceFromEnd}) => {
             if(distanceFromEnd < 0){
                 return;
             }
             //Update offset on end reached
-            setOffset(offset + 50);
+            setOffset(offset + 50);  
         }}
           style={{width: '95%'}}
           /> 
