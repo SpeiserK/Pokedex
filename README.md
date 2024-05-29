@@ -16,6 +16,10 @@ When scrolled to the bottom of the list, the next 50 Pokemon will load after the
 
 ![image info](./images/PokeListView.png)
 
+
+https://github.com/SpeiserK/Pokedex/assets/76970667/077a8ffc-d64e-4d60-b683-068c416df804
+
+
 ### Details View
 
 Displays the details of a selected Pokemon from the List View. This screen shows the name, type(s), height, weight, and moves that the Pokemon can learn.
