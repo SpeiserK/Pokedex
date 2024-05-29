@@ -7,8 +7,15 @@ import { useGetPokemonByNameListQuery } from '../services/pokemon';
 function Home () {
     //Offset state variable
     const [offset, setOffset] = useState(0)
+
+    /*
+    Momentum var to prevent FlatList onEndReached calling multiple times
+    - Using state for this variable significantly slows performance
+    -- const [momentum, setMomentum] = useState(false);
+    */
+    var momentum = false;
     //Query call
-    var {data , error , isLoading} = useGetPokemonByNameListQuery({offset});
+    var {data , error , isLoading, isSuccess} = useGetPokemonByNameListQuery({offset});
 
   return (
     <View
@@ -37,13 +44,24 @@ function Home () {
           data={data.results}
           renderItem={({item}) => <PokemonItem name= {item.name} url ={item.url}/>}
           scrollEnabled={true}
-          onEndReachedThreshold={2}
+          initialNumToRender={50}
+          maxToRenderPerBatch={50}
+          onMomentumScrollBegin={() => {momentum =true}}
+          onMomentumScrollEnd={() => {momentum = false}}
+          onEndReachedThreshold={0.5}
           onEndReached={({distanceFromEnd}) => {
-            if(distanceFromEnd < 0){
+            //prevent query call on initial flatlist load or if user is not scrolling
+            if(distanceFromEnd < 0 || !momentum){
                 return;
             }
-            //Update offset on end reached
-            setOffset(offset + 50);
+            //prevent query call if previous query is still loading
+            if(isLoading){
+              return;
+            }
+            //Update offset on end reached, queries next set of pokemon if previous query was successful
+            if(isSuccess){
+              setOffset(offset + 50);  
+            }
         }}
           style={{width: '95%'}}
           /> 
