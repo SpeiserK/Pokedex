@@ -22,14 +22,14 @@ export const pokemonApi = createApi({
         currentCache = currentCache.results.concat(newItems.results)
         obj.results = currentCache;
         currentCache = obj;
-        console.log(currentCache)
+        //console.log(currentCache)
         return {
           results: currentCache.results
         };
       },
       // Refetch when the page arg changes
       forceRefetch({ currentArg, previousArg }) {
-        return currentArg!== previousArg
+        return currentArg !== previousArg
       },
     }),
   }),
